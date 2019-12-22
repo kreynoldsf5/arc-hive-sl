@@ -1,0 +1,11 @@
+# OS
+.DS_Store
+.tmp
+
+# env
+.env.development
+.env.production
+
+# app
+.serverless
+node_modules

@@ -1,0 +1,52 @@
+service: arc-hive-api
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: dev
+  region: us-west-2
+  memorySize: 128
+  vpc:
+    securityGroupIds:
+      - sg-046bcb54dcaa4282c
+    subnetIds:
+      - subnet-0704bb3c9405234ff
+      - subnet-00d54983f79432edf
+functions:
+  app:
+    handler: api.handler
+    environment:
+        OIDC_ID_META: ${env:OIDC_ID_META}
+        OIDC_CLIENT_ID: ${env:OIDC_CLIENT_ID}
+        OIDC_ISS: ${env:OIDC_ISS}
+        OIDC_AUD: ${env:OIDC_AUD}
+        MONGO_STRING: ${env:MONGO_STRING}
+        MONGO_CONTENT_COLLECTION: ${env:MONGO_CONTENT_COLLECTION}
+        MONGO_AUTHZ_COLLECTION: ${env:MONGO_AUTHZ_COLLECTION}
+        S3_BIN_BUCKET: ${env:S3_BIN_BUCKET}
+    events:
+      - http: 
+          path: /doc
+          method: post
+          cors: true
+      - http: 
+          path: /docs
+          method: post
+          cors: true
+      - http: 
+          path: /download/{proxy+}
+          method: get
+          cors: true
+      - http: 
+          path: /image/{proxy+}
+          method: get
+          cors: true
+          response:
+            headers:
+              Content-Type: 'image/png'
+      - http: 
+          path: /echo
+          method: get
+          cors: true
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-offline
