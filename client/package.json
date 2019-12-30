@@ -1,0 +1,60 @@
+{
+  "name": "arc-hive-client",
+  "version": "0.8.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.19.0",
+    "html-react-parser": "^0.10.0",
+    "query-string": "^6.9.0",
+    "react": "^16.11.0",
+    "react-aad-msal": "^1.1.2",
+    "react-dom": "^16.11.0",
+    "react-helmet": "^5.2.1",
+    "react-image": "^2.2.1",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.3.0",
+    "react-syntax-highlighter": "^12.2.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.88.1",
+    "string": "^3.3.3",
+    "style-to-object": "^0.3.0"
+  },
+  "scripts": {
+    "start": "PORT=3000 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ]
+  }
+}
