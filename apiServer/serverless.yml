@@ -1,16 +1,34 @@
 service: arc-hive-api
 provider:
   name: aws
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 's3:ListBucket'
+      Resource:
+        Fn::Join:
+          - ''
+          - - 'arn:aws:s3:::'
+            - ${env:S3_BIN_BUCKET}
+    - Effect: 'Allow'
+      Action:
+        - 's3:getObject'
+      Resource:
+        Fn::Join:
+          - ''
+          - - 'arn:aws:s3:::'
+            - ${env:S3_BIN_BUCKET}
+            - '/*'
   runtime: nodejs10.x
   stage: dev
   region: us-west-2
   memorySize: 128
   vpc:
     securityGroupIds:
-      - sg-046bcb54dcaa4282c
+      - ${env:SECGRP1}
     subnetIds:
-      - subnet-0704bb3c9405234ff
-      - subnet-00d54983f79432edf
+      - ${env:SUBNET1}
+      - ${env:SUBNET2}
 functions:
   app:
     handler: api.handler
