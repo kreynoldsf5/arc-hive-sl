@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import queryString from 'query-string'
 import axios from 'axios';
 import {Helmet} from "react-helmet";
+import Loader from 'react-loader-spinner'
 
 import { authProvider } from './authProvider';
 
@@ -36,7 +37,7 @@ export default class Results extends Component {
             </Helmet>
             { this.state.isLoading ? (
                 <Grid centered><Grid.Column width={12}>
-                    {this.disPlaceHolders()}
+                    {this.getLoader()}
                 </Grid.Column></Grid>
 
             ) : (
@@ -146,6 +147,20 @@ export default class Results extends Component {
             )
         }
         return (placeHolders)
+    }
+
+    getLoader = () => {
+        return (
+            <Fragment>
+                <Divider hidden />
+                <Divider hidden />
+                <Divider hidden />
+            <Loader 
+            type="ThreeDots" color="#A9A9A9" height={100} width={100}
+            style={{ textAlign: "center" }}
+            />
+        </Fragment>
+        )
     }
 
     disResults = () => {

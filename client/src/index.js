@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./app.js";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 const stylelink = document.createElement("link");
 stylelink.rel = "stylesheet";

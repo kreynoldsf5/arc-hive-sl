@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react'
-import { Item, Icon, Divider, Grid, Placeholder, Message, Popup, Container, Header, Segment, Embed } from 'semantic-ui-react'
+import { Item, Icon, Divider, Grid, Message, Popup, Container, Header, Segment, Embed } from 'semantic-ui-react'
 import axios from 'axios';
 import parse from 'html-react-parser';
 import {Helmet} from "react-helmet";
+import Loader from 'react-loader-spinner'
+
 
 import { authProvider } from './authProvider';
 import ArcImage from './arcImage';
@@ -24,7 +26,7 @@ export default class Doc extends Component {
             <Grid centered><Grid.Column width={12}>
                 {this.statusMessage()}
                 { this.state.isLoading ? (
-                    this.getPlaceHolder()
+                    this.getLoader()
                 ) : (
                     this.thatDoc()
                 )}
@@ -149,21 +151,16 @@ export default class Doc extends Component {
         );
     };
 
-    getPlaceHolder = () => {
+    getLoader = () => {
         return (
-            <Fragment>            
-                <Placeholder fluid>
-                <Placeholder.Header image>
-                <Placeholder.Line />
-                <Placeholder.Line />
-                </Placeholder.Header>
-                <Placeholder.Paragraph>
-                <Placeholder.Line />
-                <Placeholder.Line />
-                <Placeholder.Line />
-                <Placeholder.Line />
-                </Placeholder.Paragraph>
-                </Placeholder>
+            <Fragment>
+                <Divider hidden />
+                <Divider hidden />
+                <Divider hidden />
+                <Loader 
+                    type="ThreeDots" color="#A9A9A9" height={100} width={100}
+                    style={{ textAlign: "center" }}
+                />
             </Fragment>
         )
     }
@@ -350,6 +347,30 @@ export default class Doc extends Component {
         return(
             <Item.Meta content={userContent} />
         )
+    };
+
+    getSignedLink = async () => {
+        const token = await authProvider.getIdToken();
+        const idToken = token.idToken.rawIdToken;
+       
+        setTimeout( async () => { 
+            axios({
+                url: backendURL + this.props.imageURL,
+                method: 'GET',
+                headers: { Authorization: 'Bearer ' + idToken }
+            }).then((response) => {
+                this.setState({ 
+                imageSrc: response.data.signedImage,
+                isLoading: false 
+                })
+            })
+            .catch( error => {
+                this.setState({
+                    isLoading: false,
+                    isError: true
+                })
+            });
+        },1000)
     };
 
 

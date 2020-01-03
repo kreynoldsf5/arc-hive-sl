@@ -112,7 +112,7 @@ app.get('/download/:binpath/:filename',
 
 app.get('/image/:id',
         passport.authenticate('oauth-bearer', { session: false }),
-        s3Control.s3ImageDL)
+        s3Control.s3SignedImage)
 
 app.get('/echo',
         //passport.authenticate('oauth-bearer', { session: false }),
