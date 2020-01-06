@@ -9,6 +9,7 @@ import Loader from 'react-loader-spinner'
 import { authProvider } from './authProvider';
 import ArcImage from './arcImage';
 import ArcMacro from './arcMacro';
+import ArcDownload from './arcDownload';
 
 const backendURL = process.env.REACT_APP_BACKEND_URL
 
@@ -113,44 +114,6 @@ export default class Doc extends Component {
         }, 1000)
     };
 
-    handleDL = async (e, binpath, filename ) => {
-        this.handleLoad(true)
-        const token = await authProvider.getIdToken();
-        const idToken = token.idToken.rawIdToken;
-
-        if (this.cancel) { this.cancel.cancel(); }
-        this.cancel = axios.CancelToken.source();
-        axios({
-            url: backendURL + '/download/' + encodeURIComponent(binpath) + "/" + encodeURIComponent(filename),
-            method: 'GET',
-            responseType: 'blob',
-            headers: { Authorization: 'Bearer ' + idToken }
-          }).then((response) => {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', filename);
-            document.body.appendChild(link);
-            link.click();
-            this.handleLoad(false)
-            this.setState({isLoading: false})
-          }).catch(error => {
-            if (error) {
-                if (error.response) {
-                    this.setState({ isLoading: false, errMessage: error.response.data.error})
-                    this.handleLoad(false);
-                } else if (error.request) {
-                    this.setState({ isLoading: false, errMessage: error.request})
-                    this.handleLoad(false);
-                } else {
-                    this.setState({ isLoading: false, errMessage: error.message})
-                    this.handleLoad(false);
-                }
-            }
-          }
-        );
-    };
-
     getLoader = () => {
         return (
             <Fragment>
@@ -209,8 +172,7 @@ export default class Doc extends Component {
             <Segment>
               <Grid><Grid.Row>
                 <Grid.Column width={2}>
-                <Icon link name={o.icon} size='huge' 
-                    onClick={() => this.handleDL(this, o.binpath, o.filename)} />
+                <ArcDownload icon={o.icon} binpath={o.binpath} filename={o.filename} />
                 </Grid.Column>
                 <Divider vertical hidden/>
                 <Grid.Column width={10}>
@@ -237,8 +199,7 @@ export default class Doc extends Component {
         if(this.state.docContents.binpath) {
             return (
                 <Popup trigger={
-                    <Icon link name={this.state.docContents.icon} size='huge' 
-                        onClick={() => this.handleDL(this, this.state.docContents.binpath, this.state.docContents.filename)} />
+                    <ArcDownload binpath={this.state.docContents.binpath} filename={this.state.docContents.filename} icon={this.state.docContents.icon} />
                 }
                 on='hover' header={this.state.docContents.filename} content={this.state.docContents.humanfs} />
                 )
@@ -348,30 +309,5 @@ export default class Doc extends Component {
             <Item.Meta content={userContent} />
         )
     };
-
-    getSignedLink = async () => {
-        const token = await authProvider.getIdToken();
-        const idToken = token.idToken.rawIdToken;
-       
-        setTimeout( async () => { 
-            axios({
-                url: backendURL + this.props.imageURL,
-                method: 'GET',
-                headers: { Authorization: 'Bearer ' + idToken }
-            }).then((response) => {
-                this.setState({ 
-                imageSrc: response.data.signedImage,
-                isLoading: false 
-                })
-            })
-            .catch( error => {
-                this.setState({
-                    isLoading: false,
-                    isError: true
-                })
-            });
-        },1000)
-    };
-
 
 };

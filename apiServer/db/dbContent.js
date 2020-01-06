@@ -36,5 +36,10 @@ const ContentSchema = new mongoose.Schema ( //Update Needed
 ); 
 
 ContentSchema.plugin(aggregatePaginate);
-const ContentModel = mongoose.model("content", ContentSchema, process.env.MONGO_CONTENT_COLLECTION);
-module.exports = ContentModel;
+global.ContentModel = global.ContentModel || mongoose.model("content", ContentSchema, process.env.MONGO_CONTENT_COLLECTION);
+module.exports = global.ContentModel;
+
+
+
+//const ContentModel = mongoose.model("content", ContentSchema, process.env.MONGO_CONTENT_COLLECTION);
+//module.exports = ContentModel;

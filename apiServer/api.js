@@ -9,9 +9,10 @@ const cors = require('cors')
 const passport = require('passport');
 const OIDCBearerStrategy = require('passport-azure-ad').BearerStrategy;
 //
-const dbConnection = require('./db/dbConfig')
+//const dbConnection = require('./db/dbConfig')
+const dbConnection = require('./db/db')
 const dbControl = require('./db/dbControl')
-const s3Control = require('./s3Control.js')
+const s3Control = require('./s3Control')
 
 /******************************************************************************
  * Express Middleware
@@ -60,7 +61,7 @@ app.post('/docs',
     passport.authenticate('oauth-bearer', { session: false }),
     async (req, res) => {
         try {
-            await dbConnection();
+            const db = await dbConnection();
             let results = await dbControl.masterSearch(req.body);
                 if (!results.docs.length) {
                     res.status(400).json(
@@ -91,7 +92,7 @@ app.post('/doc',
     passport.authenticate('oauth-bearer', { session: false }),
     async (req, res) => {
         try {
-            await dbConnection();
+            const db = await dbConnection();
             let result = await dbControl.getDocByID(req.body);
             if (result) {
                 return res.status(200).json({ success: true, data: result })
@@ -108,7 +109,7 @@ app.post('/doc',
 
 app.get('/download/:binpath/:filename',
         passport.authenticate('oauth-bearer', { session: false }),
-        s3Control.s3Download)
+        s3Control.s3SignedDownload)
 
 app.get('/image/:id',
         passport.authenticate('oauth-bearer', { session: false }),

@@ -12,7 +12,7 @@ const connectToDatabase = async () => {
   console.log('using new database connection');
   const database = await mongoose.connect(process.env.MONGO_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
   isConnected = database.connections[0].readyState;
-  // return isConnected;
+  return isConnected;
 };
 
 module.exports = connectToDatabase;
