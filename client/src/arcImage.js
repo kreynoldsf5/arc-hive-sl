@@ -5,6 +5,7 @@ import { authProvider } from './authProvider';
 import Img from 'react-image'
 import { Image, Divider } from 'semantic-ui-react'
 import Loader from 'react-loader-spinner'
+import caseFormatter from 'case-formatter';
 
 
 const backendURL = process.env.REACT_APP_BACKEND_URL
@@ -15,7 +16,7 @@ export default class ArcImage extends React.Component {
     this.state = {};
   }
 
-  render(){
+  render2(){
     return (
     <Fragment>
     <div style={styled(this.props.imageStyle)}>
@@ -36,6 +37,26 @@ export default class ArcImage extends React.Component {
       />
     </div>
     </Fragment>
+    )
+  }
+
+  render(){
+    const tStyle = caseFormatter.kebabToCamel(styled(this.props.imageStyle))
+    return (
+    <span style={tStyle}>
+      <Img
+        src={[this.state.imageSrc, <Image src='https://react.semantic-ui.com/images/wireframe/image.png' centered />]}
+        loader={
+            <Loader 
+            type="ThreeDots" color="#A9A9A9" height={80} width={80}
+            style={{ textAlign: "center" }}
+            />
+        }
+        alt={this.props.imageAlt}
+        style={tStyle}
+        decode={true}
+      />
+    </span>
     )
   }
 

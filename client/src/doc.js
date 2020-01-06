@@ -169,7 +169,7 @@ export default class Doc extends Component {
     disAttach = () => {
         if (this.state.docContents.attachments) {
             const attach = this.state.docContents.attachments.map((o) =>
-            <Segment>
+            <Segment key={o.attachmentid}>
               <Grid><Grid.Row>
                 <Grid.Column width={2}>
                 <ArcDownload icon={o.icon} binpath={o.binpath} filename={o.filename} />
