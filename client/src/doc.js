@@ -138,10 +138,13 @@ export default class Doc extends Component {
                 </Helmet>
                 <div key={thisDoc._id}> 
                     <Container textAlign='left'>
-                        <Header as='h2'><this.buttonDown />{thisDoc.subject}{thisDoc.title}</Header>
+                        {/*<Header as='h2'><this.buttonDown />{thisDoc.subject}{thisDoc.title}</Header> */}
+                        <Header as='h2'>{thisDoc.subject}{thisDoc.title}</Header>
                     </Container>
                     <Container textAlign='left'>{this.formatUser(thisDoc.fullname, thisDoc.email)}</Container>
                     <Container textAlign='left'>{this.formatDate(thisDoc.prettycreation, thisDoc.prettymodification)}</Container>
+                    {/* Added Below */}
+                    <Container><this.mainDoc/></Container>
                     <Divider />
                     <Container textAlign='justified'>
                         {thisDoc.summary && thisDoc.summary.length > 0 ? (
@@ -171,11 +174,11 @@ export default class Doc extends Component {
             const attach = this.state.docContents.attachments.map((o) =>
             <Segment key={o.attachmentid}>
               <Grid><Grid.Row>
-                <Grid.Column width={2}>
+                <Grid.Column width={1}>
                 <ArcDownload icon={o.icon} binpath={o.binpath} filename={o.filename} />
                 </Grid.Column>
                 <Divider vertical hidden/>
-                <Grid.Column width={10}>
+                <Grid.Column width={11}>
                 <b>{o.filename}</b> <br/>
                 created on {o.prettycreation}<br/>
                 {o.humanfs}
@@ -195,20 +198,26 @@ export default class Doc extends Component {
         }
     }
 
-    buttonDown = () => {
+    mainDoc = () => {
         if(this.state.docContents.binpath) {
             return (
-                <Popup trigger={
-                    <ArcDownload binpath={this.state.docContents.binpath} filename={this.state.docContents.filename} icon={this.state.docContents.icon} />
-                }
-                on='hover' header={this.state.docContents.filename} content={this.state.docContents.humanfs} />
-                )
-        } else {
-            return (
-               <Icon name={this.state.docContents.icon} size='huge' disabled  />
+                <Fragment>
+                <Divider hidden/>
+                <Grid><Grid.Row><Grid.Column width={1}>
+                <ArcDownload icon={this.state.docContents.icon} binpath={this.state.docContents.binpath} filename={this.state.docContents.filename} />
+                </Grid.Column>
+                <Divider vertical hidden/>
+                <Grid.Column width={11}>
+                {this.state.docContents.filename} <br/>
+                {this.state.docContents.humanfs}
+                </Grid.Column></Grid.Row></Grid>
+                </Fragment>  
             )
+        } else {
+            return ( null )
         }
     };
+
 
     parseHTML = (html) => {
         const replace = domNode => {
@@ -289,7 +298,7 @@ export default class Doc extends Component {
     };
 
     formatDate = (prettyCreate, prettyModified) => {
-        var dataContent
+        var dateContent
         if(prettyCreate.trim() === prettyModified.trim()) {
             dateContent = "created at " + prettyCreate.trim()
         } else {

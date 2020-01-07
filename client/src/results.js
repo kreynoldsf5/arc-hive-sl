@@ -274,7 +274,7 @@ export default class Results extends Component {
 
     //Im OK with doing this parsing here
     formatDate = (prettyCreate, prettyModified) => {
-        var dataContent
+        var dateContent
         if(prettyCreate.trim() === prettyModified.trim()) {
             dateContent = "created at " + prettyCreate.trim()
         } else {
