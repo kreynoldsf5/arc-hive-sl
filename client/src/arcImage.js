@@ -1,12 +1,11 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import axios from 'axios';
 import styled from 'style-to-object';
 import { authProvider } from './authProvider';
 import Img from 'react-image'
-import { Image, Divider } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
 import Loader from 'react-loader-spinner'
 import caseFormatter from 'case-formatter';
-
 
 const backendURL = process.env.REACT_APP_BACKEND_URL
 
@@ -16,32 +15,13 @@ export default class ArcImage extends React.Component {
     this.state = {};
   }
 
-  render2(){
-    return (
-    <Fragment>
-    <div style={styled(this.props.imageStyle)}>
-      <Img
-        src={[this.state.imageSrc, <Image src='https://react.semantic-ui.com/images/wireframe/image.png' centered />]}
-        loader={<Fragment><Divider hidden />
-            <Loader 
-            type="ThreeDots" color="#A9A9A9" height={80} width={80}
-            style={{ textAlign: "center" }}
-            />
-        </Fragment>}
-        alt={this.props.imageAlt}
-        style={{display: "block",
-          marginLeft: "auto",
-          marginRight: "auto",
-          width: "100%"}}
-        decode={true}
-      />
-    </div>
-    </Fragment>
-    )
-  }
-
   render(){
-    const tStyle = caseFormatter.kebabToCamel(styled(this.props.imageStyle))
+    var tStyle
+    if (styled(this.props.imageStyle)) {
+      tStyle = caseFormatter.kebabToCamel(styled(this.props.imageStyle))
+    } else {
+      tStyle = { height: "auto" }
+    }
     return (
     <span style={tStyle}>
       <Img

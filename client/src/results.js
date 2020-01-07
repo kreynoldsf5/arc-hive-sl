@@ -274,22 +274,15 @@ export default class Results extends Component {
 
     //Im OK with doing this parsing here
     formatDate = (prettyCreate, prettyModified) => {
+        var dataContent
         if(prettyCreate.trim() === prettyModified.trim()) {
-            const dateContent = "created on " + prettyCreate.trim()
-            return (
-                <Item.Meta content={dateContent} />               
-            )
+            dateContent = "created at " + prettyCreate.trim()
         } else {
-            const dateContent1 = "created on " + prettyCreate.trim()
-            const dateContent2 = "modified on " + prettyModified.trim()
-            return (
-                <Fragment>
-                <Item.Meta content={dateContent1} />
-                <Item.Meta content={dateContent2} />
-                </Fragment>
-            )
-    
+            dateContent = "created at " + prettyCreate.trim() + ", modified at " + prettyModified.trim()
         }
+        return (
+            <Item.Meta content={dateContent} />               
+        )
     };
  
     formatUser = (username, email) => {

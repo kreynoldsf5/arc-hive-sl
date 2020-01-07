@@ -7,6 +7,7 @@ import queryString from 'query-string'
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
 import atomDark from 'react-syntax-highlighter/dist/esm/styles/prism/atom-dark';
+import ArcDownload from './arcDownload';
  
 SyntaxHighlighter.registerLanguage('javascript', javascript);
 
@@ -45,7 +46,7 @@ macroRender() {
         }
     }
     if (this.props.type === 'blogpost') {
-        if (this.state.isLoading) {
+        if (this.state.isLoading || this.state.isError) {
             return (
                 this.props.anchor
             )
@@ -128,33 +129,46 @@ macroRender() {
     }, 1000)
 };
 
-handleDL = async (e, binpath, filename ) => {
+handleDL = async (e, binpath, filename) => {
+    //TBD: universal loading status (images and downloads)
+    //TBD: universal status message(s)
+
     const token = await authProvider.getIdToken();
     const idToken = token.idToken.rawIdToken;
 
-    if (this.cancel) { this.cancel.cancel(); }
-    this.cancel = axios.CancelToken.source();
-    axios({
-        url: backendURL + '/download/' + encodeURIComponent(binpath) + "/" + encodeURIComponent(filename),
-        method: 'GET',
-        responseType: 'blob',
-        headers: { Authorization: 'Bearer ' + idToken }
-    }).then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', filename);
-        document.body.appendChild(link);
-        link.click();
-        this.setState({isLoading: false})
-    })
-    .catch( error => {
-        this.setState({
-            docContents: null,
-            isLoading: false,
-            isError: true
+    try {
+        axios({
+            url: backendURL + '/download/' + encodeURIComponent(binpath) + "/" + encodeURIComponent(filename),
+            method: 'GET',
+            headers: { Authorization: 'Bearer ' + idToken }
+        }).then((linkRes) => {
+            axios({
+                url: linkRes.data.signedDownload,
+                method: 'GET',
+                responseType: 'blob'
+              }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', filename);
+                document.body.appendChild(link);
+                link.click();
+                //this.handleLoad(false)
+                this.setState({isLoading: false})
+              })
         })
-    });
+    } catch(error) {
+        if (error.response) {
+            this.setState({ isLoading: false, errMessage: error.response.data.error})
+            //this.handleLoad(false);
+        } else if (error.request) {
+            this.setState({ isLoading: false, errMessage: error.request})
+            //this.handleLoad(false);
+        } else {
+            this.setState({ isLoading: false, errMessage: error.message})
+            //this.handleLoad(false);
+        }
+    }
 };
 
 

@@ -289,18 +289,15 @@ export default class Doc extends Component {
     };
 
     formatDate = (prettyCreate, prettyModified) => {
+        var dataContent
         if(prettyCreate.trim() === prettyModified.trim()) {
-            const dateContent = "created on " + prettyCreate.trim()
-            return (
-                <Item.Meta content={dateContent} />               
-            )
+            dateContent = "created at " + prettyCreate.trim()
         } else {
-            const dateContent = "modified on " + prettyCreate.trim()
-            return (
-                <Item.Meta content={dateContent} />
-            )
-
+            dateContent = "created at " + prettyCreate.trim() + ", modified at " + prettyModified.trim()
         }
+        return (
+            <Item.Meta content={dateContent} />               
+        )
     };
 
     formatUser = (username, email) => {
