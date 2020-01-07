@@ -19,6 +19,7 @@
     "passport": "^0.4.1",
     "passport-azure-ad": "^4.2.1",
     "serverless": "^1.60.1",
+    "serverless-finch": "^2.5.2",
     "serverless-http": "^2.3.0"
   },
   "devDependencies": {

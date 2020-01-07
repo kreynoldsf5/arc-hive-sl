@@ -67,4 +67,9 @@ functions:
           cors: true
 plugins:
   - serverless-dotenv-plugin
+  - serverless-finch
   - serverless-offline
+custom:
+  client:
+    bucketName: ${env:FRONTEND_BUCKET}
+    distributionFolder: ../client/build/

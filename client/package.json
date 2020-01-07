@@ -25,6 +25,9 @@
   "scripts": {
     "start": "PORT=8000 react-scripts start",
     "build": "react-scripts build",
+    "build-dev": "dotenv -e .env.development react-scripts build",
+    "deploy": "aws s3 sync build/ s3://arc-hive-front",
+    "deploy-dev": "aws s3 sync build/ s3://arc-hive-front-dev",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -47,7 +50,8 @@
     "@babel/plugin-proposal-class-properties": "^7.7.0",
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
-    "babel-plugin-emotion": "^10.0.27"
+    "babel-plugin-emotion": "^10.0.27",
+    "dotenv-cli": "^3.1.0"
   },
   "babel": {
     "presets": [
