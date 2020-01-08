@@ -128,62 +128,58 @@ export default class Doc extends Component {
         )
     }
 
-     thatDoc = () => {
-         if (this.state.docContents) {
-             const thisDoc = this.state.docContents;
-             return (
-                <Fragment>
-                <Helmet>
-                    <title>{thisDoc.subject || thisDoc.title}</title>
-                </Helmet>
-                <div key={thisDoc._id}> 
-                    <Container textAlign='left'>
-                        {/*<Header as='h2'><this.buttonDown />{thisDoc.subject}{thisDoc.title}</Header> */}
-                        <Header as='h2'>{thisDoc.subject}{thisDoc.title}</Header>
-                    </Container>
-                    <Container textAlign='left'>{this.formatUser(thisDoc.fullname, thisDoc.email)}</Container>
-                    <Container textAlign='left'>{this.formatDate(thisDoc.prettycreation, thisDoc.prettymodification)}</Container>
-                    {/* Added Below */}
-                    <Container><this.mainDoc/></Container>
-                    <Divider />
-                    <Container textAlign='justified'>
-                        {thisDoc.summary && thisDoc.summary.length > 0 ? (
-                            <Fragment>
-                                {this.parseHTML(thisDoc.summary)}
-                                <Divider hidden/>
-                            </Fragment>
-                        ) : ( null )}
-                        <Fragment>
-                        {this.parseHTML(thisDoc.body)}{this.parseHTML(thisDoc.bodytext)}
-                        </Fragment>
-                    </Container>
-                    {thisDoc.attachments  ? (
-                        this.disAttach()
-                    ) : ( null )}
-                    <Divider hidden />
-                </div>
-                </Fragment>
-             )
-         } else {
-             return null
-         }
-     }
+    thatDoc = () => {
+        if (this.state.docContents) {
+            const thisDoc = this.state.docContents;
+            return (
+               <Fragment>
+               <Helmet>
+                   <title>{thisDoc.subject || thisDoc.title}</title>
+               </Helmet>
+               <div key={thisDoc._id}> 
+                   <Container textAlign='fluid'>
+                       <Header as='h2'>{thisDoc.subject}{thisDoc.title}</Header>
+                   </Container>
+                   <Container textAlign='fluid'>{this.formatUser(thisDoc.fullname, thisDoc.email)}</Container>
+                   <Container textAlign='fluid'>{this.formatDate(thisDoc.prettycreation, thisDoc.prettymodification)}</Container>
+                   <Container textAlign='fluid'><this.mainDoc/></Container>
+                   <Divider />
+                   <Container textAlign='fluid'>
+                       {thisDoc.summary && thisDoc.summary.length > 0 ? (
+                           <Fragment>
+                               {this.parseHTML(thisDoc.summary)}
+                               <Divider hidden/>
+                           </Fragment>
+                       ) : ( null )}
+                       <Fragment>
+                       {this.parseHTML(thisDoc.body)}{this.parseHTML(thisDoc.bodytext)}
+                       </Fragment>
+                   </Container>
+                   {thisDoc.attachments  ? (
+                       this.disAttach()
+                   ) : ( null )}
+                   <Divider hidden />
+               </div>
+               </Fragment>
+            )
+        } else {
+            return null
+        }
+    }
 
     disAttach = () => {
         if (this.state.docContents.attachments) {
             const attach = this.state.docContents.attachments.map((o) =>
             <Segment key={o.attachmentid}>
-              <Grid><Grid.Row>
-                <Grid.Column width={1}>
+                <Fragment>
+                <Grid><Grid.Row>
                 <ArcDownload icon={o.icon} binpath={o.binpath} filename={o.filename} />
-                </Grid.Column>
                 <Divider vertical hidden/>
-                <Grid.Column width={11}>
-                <b>{o.filename}</b> <br/>
-                created on {o.prettycreation}<br/>
+                {o.filename} <br/>
+                created at {o.prettycreation}<br/>
                 {o.humanfs}
-                </Grid.Column>
-            </Grid.Row></Grid>
+                </Grid.Row></Grid>
+                </Fragment>  
             </Segment>
             )
             return(
@@ -203,14 +199,12 @@ export default class Doc extends Component {
             return (
                 <Fragment>
                 <Divider hidden/>
-                <Grid><Grid.Row><Grid.Column width={1}>
+                <Grid><Grid.Row>
                 <ArcDownload icon={this.state.docContents.icon} binpath={this.state.docContents.binpath} filename={this.state.docContents.filename} />
-                </Grid.Column>
                 <Divider vertical hidden/>
-                <Grid.Column width={11}>
                 {this.state.docContents.filename} <br/>
                 {this.state.docContents.humanfs}
-                </Grid.Column></Grid.Row></Grid>
+                </Grid.Row></Grid>
                 </Fragment>  
             )
         } else {
