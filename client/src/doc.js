@@ -128,46 +128,44 @@ export default class Doc extends Component {
         )
     }
 
-     thatDoc = () => {
-         if (this.state.docContents) {
-             const thisDoc = this.state.docContents;
-             return (
-                <Fragment>
-                <Helmet>
-                    <title>{thisDoc.subject || thisDoc.title}</title>
-                </Helmet>
-                <div key={thisDoc._id}> 
-                    <Container textAlign='left'>
-                        {/*<Header as='h2'><this.buttonDown />{thisDoc.subject}{thisDoc.title}</Header> */}
-                        <Header as='h2'>{thisDoc.subject}{thisDoc.title}</Header>
-                    </Container>
-                    <Container textAlign='left'>{this.formatUser(thisDoc.fullname, thisDoc.email)}</Container>
-                    <Container textAlign='left'>{this.formatDate(thisDoc.prettycreation, thisDoc.prettymodification)}</Container>
-                    {/* Added Below */}
-                    <Container><this.mainDoc/></Container>
-                    <Divider />
-                    <Container textAlign='justified'>
-                        {thisDoc.summary && thisDoc.summary.length > 0 ? (
-                            <Fragment>
-                                {this.parseHTML(thisDoc.summary)}
-                                <Divider hidden/>
-                            </Fragment>
-                        ) : ( null )}
-                        <Fragment>
-                        {this.parseHTML(thisDoc.body)}{this.parseHTML(thisDoc.bodytext)}
-                        </Fragment>
-                    </Container>
-                    {thisDoc.attachments  ? (
-                        this.disAttach()
-                    ) : ( null )}
-                    <Divider hidden />
-                </div>
-                </Fragment>
-             )
-         } else {
-             return null
-         }
-     }
+    thatDoc = () => {
+        if (this.state.docContents) {
+            const thisDoc = this.state.docContents;
+            return (
+               <Fragment>
+               <Helmet>
+                   <title>{thisDoc.subject || thisDoc.title}</title>
+               </Helmet>
+               <div key={thisDoc._id}> 
+                   <Container textAlign='left'>
+                       <Header as='h2'>{thisDoc.subject}{thisDoc.title}</Header>
+                   </Container>
+                   <Container textAlign='left'>{this.formatUser(thisDoc.fullname, thisDoc.email)}</Container>
+                   <Container textAlign='left'>{this.formatDate(thisDoc.prettycreation, thisDoc.prettymodification)}</Container>
+                   <Container><this.mainDoc/></Container>
+                   <Divider />
+                   <Container textAlign='justified'>
+                       {thisDoc.summary && thisDoc.summary.length > 0 ? (
+                           <Fragment>
+                               {this.parseHTML(thisDoc.summary)}
+                               <Divider hidden/>
+                           </Fragment>
+                       ) : ( null )}
+                       <Fragment>
+                       {this.parseHTML(thisDoc.body)}{this.parseHTML(thisDoc.bodytext)}
+                       </Fragment>
+                   </Container>
+                   {thisDoc.attachments  ? (
+                       this.disAttach()
+                   ) : ( null )}
+                   <Divider hidden />
+               </div>
+               </Fragment>
+            )
+        } else {
+            return null
+        }
+    }
 
     disAttach = () => {
         if (this.state.docContents.attachments) {
