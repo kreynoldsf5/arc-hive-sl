@@ -34,8 +34,8 @@ All content data is hosted in [Mongo Atlas](https://cloud.mongodb.com/).
 Binary data hosted in a private S3 bucket (accessed by the instances IAM role).
 
 # Reference
-## [Topology](/topology.md)
-## [Deployment](/deployment.md)
+## [Topology](/Topology.md)
+## [Development](/Development.md)
 
 
 
