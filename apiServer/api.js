@@ -6,7 +6,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const bearerToken = require('express-bearer-token')
-var jwtDecode = require('jwt-decode');
+const jwtDecode = require('jwt-decode');
 
 //
 const passport = require('passport');
