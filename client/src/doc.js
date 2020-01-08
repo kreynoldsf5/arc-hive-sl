@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Item, Icon, Divider, Grid, Message, Popup, Container, Header, Segment, Embed } from 'semantic-ui-react'
+import { Item, Divider, Grid, Message, Container, Header, Segment, Embed } from 'semantic-ui-react'
 import axios from 'axios';
 import parse from 'html-react-parser';
 import {Helmet} from "react-helmet";

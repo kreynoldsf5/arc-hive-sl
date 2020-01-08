@@ -7,8 +7,7 @@ import queryString from 'query-string'
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
 import atomDark from 'react-syntax-highlighter/dist/esm/styles/prism/atom-dark';
-import ArcDownload from './arcDownload';
- 
+
 SyntaxHighlighter.registerLanguage('javascript', javascript);
 
 const backendURL = process.env.REACT_APP_BACKEND_URL
