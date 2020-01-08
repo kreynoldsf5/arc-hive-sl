@@ -194,26 +194,6 @@ export default class Doc extends Component {
         }
     }
 
-    mainDocOld = () => {
-        if(this.state.docContents.binpath) {
-            return (
-                <Fragment>
-                <Divider hidden/>
-                <Grid><Grid.Row><Grid.Column width={1}>
-                <ArcDownload icon={this.state.docContents.icon} binpath={this.state.docContents.binpath} filename={this.state.docContents.filename} />
-                </Grid.Column>
-                <Divider vertical hidden/>
-                <Grid.Column width={11}>
-                {this.state.docContents.filename} <br/>
-                {this.state.docContents.humanfs}
-                </Grid.Column></Grid.Row></Grid>
-                </Fragment>  
-            )
-        } else {
-            return ( null )
-        }
-    };
-
     mainDoc = () => {
         if(this.state.docContents.binpath) {
             return (
