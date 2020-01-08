@@ -18,7 +18,12 @@ class Main extends Component {
             <Divider hidden/>
             <Grid centered columns={2}><Grid.Row>
             <Grid.Column width={1}>
-            <Image src={Hive} size='mini' />
+            <Image 
+                src={Hive} 
+                size='mini'
+                href='https://github.com/kreynoldsf5/arc-hive-sl'
+                target='_blank' 
+            />
             </Grid.Column>
             <Grid.Column width={13}>
             <Input type='text' 
