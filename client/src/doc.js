@@ -173,17 +173,15 @@ export default class Doc extends Component {
         if (this.state.docContents.attachments) {
             const attach = this.state.docContents.attachments.map((o) =>
             <Segment key={o.attachmentid}>
-              <Grid><Grid.Row>
-                <Grid.Column width={1}>
+                <Fragment>
+                <Grid><Grid.Row>
                 <ArcDownload icon={o.icon} binpath={o.binpath} filename={o.filename} />
-                </Grid.Column>
                 <Divider vertical hidden/>
-                <Grid.Column width={11}>
-                <b>{o.filename}</b> <br/>
-                created on {o.prettycreation}<br/>
+                {o.filename} <br/>
+                created at {o.prettycreation}<br/>
                 {o.humanfs}
-                </Grid.Column>
-            </Grid.Row></Grid>
+                </Grid.Row></Grid>
+                </Fragment>  
             </Segment>
             )
             return(
@@ -198,7 +196,7 @@ export default class Doc extends Component {
         }
     }
 
-    mainDoc = () => {
+    mainDocOld = () => {
         if(this.state.docContents.binpath) {
             return (
                 <Fragment>
@@ -211,6 +209,24 @@ export default class Doc extends Component {
                 {this.state.docContents.filename} <br/>
                 {this.state.docContents.humanfs}
                 </Grid.Column></Grid.Row></Grid>
+                </Fragment>  
+            )
+        } else {
+            return ( null )
+        }
+    };
+
+    mainDoc = () => {
+        if(this.state.docContents.binpath) {
+            return (
+                <Fragment>
+                <Divider hidden/>
+                <Grid><Grid.Row>
+                <ArcDownload icon={this.state.docContents.icon} binpath={this.state.docContents.binpath} filename={this.state.docContents.filename} />
+                <Divider vertical hidden/>
+                {this.state.docContents.filename} <br/>
+                {this.state.docContents.humanfs}
+                </Grid.Row></Grid>
                 </Fragment>  
             )
         } else {
