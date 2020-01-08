@@ -26,7 +26,7 @@
     "start": "PORT=8000 react-scripts start",
     "build": "react-scripts build",
     "build-dev": "dotenv -e .env.development react-scripts build",
-    "deploy": "aws s3 sync build/ s3://arc-hive-front",
+    "deploy": "aws s3 sync --cache-control 'max-age=604800' --exclude index.html build/ s3://arc-hive-front && aws s3 sync --cache-control 'no-cache' build/ s3://arc-hive-front",
     "deploy-dev": "aws s3 sync build/ s3://arc-hive-front-dev",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
