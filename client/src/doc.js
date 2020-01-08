@@ -137,14 +137,14 @@ export default class Doc extends Component {
                    <title>{thisDoc.subject || thisDoc.title}</title>
                </Helmet>
                <div key={thisDoc._id}> 
-                   <Container textAlign='left'>
+                   <Container textAlign='fluid'>
                        <Header as='h2'>{thisDoc.subject}{thisDoc.title}</Header>
                    </Container>
-                   <Container textAlign='left'>{this.formatUser(thisDoc.fullname, thisDoc.email)}</Container>
-                   <Container textAlign='left'>{this.formatDate(thisDoc.prettycreation, thisDoc.prettymodification)}</Container>
-                   <Container><this.mainDoc/></Container>
+                   <Container textAlign='fluid'>{this.formatUser(thisDoc.fullname, thisDoc.email)}</Container>
+                   <Container textAlign='fluid'>{this.formatDate(thisDoc.prettycreation, thisDoc.prettymodification)}</Container>
+                   <Container textAlign='fluid'><this.mainDoc/></Container>
                    <Divider />
-                   <Container textAlign='justified'>
+                   <Container textAlign='fluid'>
                        {thisDoc.summary && thisDoc.summary.length > 0 ? (
                            <Fragment>
                                {this.parseHTML(thisDoc.summary)}
