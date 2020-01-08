@@ -115,15 +115,6 @@ app.get('/image/:id',
         passport.authenticate('oauth-bearer', { session: false }),
         s3Control.s3SignedImage)
 
-app.get('/echo',
-        //passport.authenticate('oauth-bearer', { session: false }),
-        (req, res) => {
-            res.status(200).json(
-                { result: "echo" }
-            )
-        });
-
-
 /******************************************************************************
  * Fire it up
  ******************************************************************************/
