@@ -34,7 +34,7 @@ const options = {
     issuer: process.env.OIDC_ISS,
     audience: process.env.OIDC_AUD,
     allowMultiAudiencesInToken: false,
-    loggingLevel:'info',
+    loggingLevel:'error',
     clockSkew: 300, //WTF????
     //ignoreExpiration: true,
     loggingNoPII: true,

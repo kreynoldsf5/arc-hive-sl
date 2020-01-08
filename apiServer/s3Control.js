@@ -53,7 +53,7 @@ s3SignedImage = async (req, res) => {
     const options = {
         Bucket: process.env.S3_BIN_BUCKET,
         Key: binPath,
-        Expires: 2,
+        Expires: 5,
         ResponseContentType: "image/png"
     };
 
