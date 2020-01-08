@@ -5,14 +5,21 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors')
-//Work to move these outside the function handlers
+const bearerToken = require('express-bearer-token')
+var jwtDecode = require('jwt-decode');
+
+//
 const passport = require('passport');
 const OIDCBearerStrategy = require('passport-azure-ad').BearerStrategy;
+
 //
-//const dbConnection = require('./db/dbConfig')
 const dbConnection = require('./db/db')
 const dbControl = require('./db/dbControl')
 const s3Control = require('./s3Control')
+
+//
+const winston = require('winston'),
+    expressWinston = require('express-winston');
 
 /******************************************************************************
  * Express Middleware
@@ -20,6 +27,30 @@ const s3Control = require('./s3Control')
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bearerToken());
+
+app.use(expressWinston.logger({
+    transports: [
+      new winston.transports.Console()
+    ],
+    format: winston.format.combine(
+      winston.format.json()
+    ),
+    meta: true,
+    metaField: null,
+    headerBlacklist: ["authorization"],
+    expressFormat: true, 
+    colorize: false,
+    dynamicMeta: function(req, res) {
+        if (req.token) {
+            var tToken = jwtDecode(req.token)
+            return {
+                name: tToken.name,
+                email: tToken.preferred_username
+            }
+        } 
+    }
+  }));
 
 /******************************************************************************
  * Azure Authentication
@@ -53,6 +84,11 @@ const options = {
   );
 
   passport.use(bearerStrategy);
+
+/******************************************************************************
+* Request Logger
+*****************************************************************************/
+
 
 /******************************************************************************
 * Functions
@@ -115,6 +151,15 @@ app.get('/image/:id',
         passport.authenticate('oauth-bearer', { session: false }),
         s3Control.s3SignedImage)
 
+app.use(expressWinston.errorLogger({
+    transports: [
+        new winston.transports.Console()
+    ],
+    format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.json()
+    )
+}));
 /******************************************************************************
  * Fire it up
  ******************************************************************************/

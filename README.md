@@ -1,6 +1,6 @@
 ![arcHive Image](/client/public/apple-touch-icon.png)
 # arcHive
-This is a GSA/Field Enablement project allowing read-only access to legacy content from `Hive`. 
+This is a GSA/Field Enablement project allowing read-only access to legacy content from Hive. 
 Use the arcHive to migrate content from supported systems (ie. sharepoint).
 
 The arcHive currently holds all published documents and blog posts from Hive.
