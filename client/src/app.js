@@ -34,6 +34,32 @@ class App extends Component {
             <title>Search - Arc-Hive</title>
         </Helmet>
         <AzureAD provider={authProvider} forceLogin={true}>
+        {
+            ({login, logout, authenticationState, error, accountInfo}) => {
+                console.log(authenticationState)
+                switch (authenticationState) {
+                    case authenticationState.Authenticated:
+                    return (
+                        <this.appRouting />
+                    );
+                    case authenticationState.Unauthenticated:
+                    return (
+                        <div>
+                        {error && <p><span>An error occurred during authentication.</span></p>}
+                        </div>
+                    );
+                    case authenticationState.InProgress:
+                    return (<p>Authenticating...</p>);
+                }
+            }
+        }
+        </AzureAD>
+        </div>
+    );
+    };
+
+    appRouting() {
+        return (
             <Router>
             <Main 
                 handleLoad={this.handleLoad} 
@@ -55,9 +81,7 @@ class App extends Component {
                 } />
             </Switch>
             </Router>
-        </AzureAD>
-        </div>
-    );
-    };
+        )
+    }
 };
 export default App;
