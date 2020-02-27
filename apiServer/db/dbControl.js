@@ -15,7 +15,7 @@ getDocByID = async (body) => {
         var selected = '_id uri binpath filename humanfs'
     }
     else {
-        var selected = '_id subject uri title fullname email prettycreation prettymodification summary body bodytext binpath filename filesize humanfs contenttype icon social attachments'
+        var selected = '_id type subject uri title fullname email prettycreation prettymodification summary body bodytext binpath filename filesize humanfs contenttype icon social attachments threaduri threadlen messages'
     }
     //Make the query
     return Content.findOne(query).select(selected).lean().exec()
@@ -31,6 +31,7 @@ masterSearch = (body) => {
     /*doc Type */
     if (body.type === 'do') { var mtype = "document"; } 
     else if (body.type === "bp") { var mtype = "blogpost"; }
+    else if (body.type === "me") { var mtype = "message"; }
     else { var mtype = {$exists: true}; } //All Content Default
     
     /* search type */

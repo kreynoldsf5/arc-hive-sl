@@ -111,7 +111,8 @@ class Main extends Component {
         const docType = [
             { key: 'ac', text: 'All Content', value: 'ac'},
             { key: 'do', text: 'Documents', value: 'do'},
-            { key: 'bp', text: 'Blog Posts', value: 'bp'}
+            { key: 'bp', text: 'Blog Posts', value: 'bp'},
+            { key: 'me', text: 'Messages', value: 'me'},
         ] 
 
         return (

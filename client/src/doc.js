@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Item, Divider, Grid, Message, Container, Header, Segment, Embed } from 'semantic-ui-react'
+import { Item, Divider, Grid, Message, Container, Header, Segment, Embed, Icon, List, Popup } from 'semantic-ui-react'
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import parse from 'html-react-parser';
 import {Helmet} from "react-helmet";
@@ -10,6 +11,7 @@ import { authProvider } from './authProvider';
 import ArcImage from './arcImage';
 import ArcMacro from './arcMacro';
 import ArcDownload from './arcDownload';
+import ArcMessage from './arcMessage';
 
 const backendURL = process.env.REACT_APP_BACKEND_URL
 
@@ -131,29 +133,34 @@ export default class Doc extends Component {
     thatDoc = () => {
         if (this.state.docContents) {
             const thisDoc = this.state.docContents;
+            if (thisDoc.type === 'thread') {
+                return (
+                    this.disThread()
+                )
+            } else {
             return (
                <Fragment>
                <Helmet>
                    <title>{thisDoc.subject || thisDoc.title}</title>
                </Helmet>
                <div key={thisDoc._id}> 
-                   <Container textAlign='fluid'>
+                   <Container fluid>
                        <Header as='h2'>{thisDoc.subject}{thisDoc.title}</Header>
                    </Container>
-                   <Container textAlign='fluid'>{this.formatUser(thisDoc.fullname, thisDoc.email)}</Container>
-                   <Container textAlign='fluid'>{this.formatDate(thisDoc.prettycreation, thisDoc.prettymodification)}</Container>
-                   <Container textAlign='fluid'><this.mainDoc/></Container>
+                   <Container fluid>{this.formatUser(thisDoc.fullname, thisDoc.email)}</Container>
+                   <Container fluid>{this.formatDate(thisDoc.prettycreation, thisDoc.prettymodification, thisDoc.type)}</Container>
+                   <Container fluid><this.mainDoc/></Container>
                    <Divider />
-                   <Container textAlign='fluid'>
+                   <Container fluid>
                        {thisDoc.summary && thisDoc.summary.length > 0 ? (
                            <Fragment>
                                {this.parseHTML(thisDoc.summary)}
                                <Divider hidden/>
                            </Fragment>
                        ) : ( null )}
-                       <Fragment>
-                       {this.parseHTML(thisDoc.body)}{this.parseHTML(thisDoc.bodytext)}
-                       </Fragment>
+                        <Fragment>
+                        {this.parseHTML(thisDoc.body)}{this.parseHTML(thisDoc.bodytext)}
+                        </Fragment>
                    </Container>
                    {thisDoc.attachments  ? (
                        this.disAttach()
@@ -161,7 +168,7 @@ export default class Doc extends Component {
                    <Divider hidden />
                </div>
                </Fragment>
-            )
+            )}
         } else {
             return null
         }
@@ -207,11 +214,70 @@ export default class Doc extends Component {
                 </Grid.Row></Grid>
                 </Fragment>  
             )
+        } else if(this.state.docContents.threaduri && this.state.docContents.threadlen > 1) {
+            return (
+                <Fragment>
+                <Container fluid>
+                <Popup content={`${this.state.docContents.threadlen} message thread`}
+                trigger={
+                    <Link to={this.state.docContents.threaduri}>
+                        <Icon name={this.state.docContents.icon} size='large' />
+                    </Link>
+                }
+                />
+                </Container>
+                </Fragment> 
+            )
+        } else if(this.state.docContents.threaduri) {
+            return (
+                <Fragment>
+                <Container fluid>
+                <Popup content={`${this.state.docContents.threadlen} message thread`}
+                trigger={
+                        <Icon name={this.state.docContents.icon} size='large' />
+                }
+                />
+                </Container>
+                </Fragment> 
+            )
         } else {
             return ( null )
         }
     };
 
+    disThread = () => {
+        return (
+            <List><List.Item>
+                <ArcMessage uid={this.state.docContents.messages.uri} handleLoad ={this.handleLoad}/>
+                {this.state.docContents.messages.children.length > 0 ? (
+                    <List.List>
+                        {this.totChildren(this.state.docContents.messages.children)}
+                    </List.List>
+                    ) : ( null )}
+            </List.Item></List>
+        )
+    }
+
+    totChildren = (childs) => {
+        const childMessages = childs.map(message => {
+            let child = <ArcMessage uid={message.uri} handleLoad ={this.handleLoad}/>
+            let subChild;
+            if (message.children && message.children.length > 0) {
+                subChild = this.totChildren(message.children)
+            }
+            return (
+                <Fragment>
+                    {child}
+                    <List.List>
+                        {subChild}
+                    </List.List>
+                </Fragment>
+            )
+        })
+        return (
+            childMessages
+        )
+    };
 
     parseHTML = (html) => {
         const replace = domNode => {
@@ -291,12 +357,13 @@ export default class Doc extends Component {
         }
     };
 
-    formatDate = (prettyCreate, prettyModified) => {
+    formatDate = (prettyCreate, prettyModified, type) => {
         var dateContent
+        var thisType = type.charAt(0).toUpperCase() + type.slice(1)
         if(prettyCreate.trim() === prettyModified.trim()) {
-            dateContent = "created at " + prettyCreate.trim()
+            dateContent = thisType + " created at " + prettyCreate.trim()
         } else {
-            dateContent = "created at " + prettyCreate.trim() + ", modified at " + prettyModified.trim()
+            dateContent = thisType + " created at " + prettyCreate.trim() + ", modified at " + prettyModified.trim()
         }
         return (
             <Item.Meta content={dateContent} />               
