@@ -4,14 +4,13 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import parse from 'html-react-parser';
 import {Helmet} from "react-helmet";
-import Loader from 'react-loader-spinner'
-
 
 import { authProvider } from './authProvider';
 import ArcImage from './arcImage';
 import ArcMacro from './arcMacro';
 import ArcDownload from './arcDownload';
 import ArcMessage from './arcMessage';
+import ArcLoader from './arcLoader';
 
 const backendURL = process.env.REACT_APP_BACKEND_URL
 
@@ -29,7 +28,12 @@ export default class Doc extends Component {
             <Grid centered><Grid.Column width={12}>
                 {this.statusMessage()}
                 { this.state.isLoading ? (
-                    this.getLoader()
+                    <Fragment>
+                        <Divider hidden />
+                        <Divider hidden />
+                        <Divider hidden />
+                        <ArcLoader/>
+                    </Fragment>
                 ) : (
                     this.thatDoc()
                 )}
@@ -115,20 +119,6 @@ export default class Doc extends Component {
             })
         }, 1000)
     };
-
-    getLoader = () => {
-        return (
-            <Fragment>
-                <Divider hidden />
-                <Divider hidden />
-                <Divider hidden />
-                <Loader 
-                    type="ThreeDots" color="#A9A9A9" height={100} width={100}
-                    style={{ textAlign: "center" }}
-                />
-            </Fragment>
-        )
-    }
 
     thatDoc = () => {
         if (this.state.docContents) {

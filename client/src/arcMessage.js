@@ -3,11 +3,11 @@ import { List, Divider, Container, Embed, Item, Popup, Icon, Segment } from 'sem
 import axios from 'axios';
 import { authProvider } from './authProvider';
 import parse from 'html-react-parser';
-import Loader from 'react-loader-spinner'
 import { Link } from "react-router-dom";
 
 import ArcImage from './arcImage';
 import ArcMacro from './arcMacro';
+import ArcLoader from './arcLoader';
 
 const backendURL = process.env.REACT_APP_BACKEND_URL
 
@@ -59,20 +59,6 @@ export default class ArcMessage extends Component {
         }, 1000)
     };
 
-    getLoader = () => {
-        return (
-            <Fragment>
-                <Divider hidden />
-                <Divider hidden />
-                <Divider hidden />
-                <Loader 
-                    type="ThreeDots" color="#A9A9A9" height={100} width={100}
-                    style={{ textAlign: "center" }}
-                />
-            </Fragment>
-        )
-    }
-
     thatMessage = () => {
         if (this.state.docContents) {
             return (
@@ -115,7 +101,12 @@ export default class ArcMessage extends Component {
         return (
         <Fragment>
                 { this.state.isLoading ? (
-                    this.getLoader()
+                    <Fragment>
+                        <Divider hidden />
+                        <Divider hidden />
+                        <Divider hidden />
+                        <ArcLoader/>
+                    </Fragment>
                 ) : (
                     this.thatMessage()
                 )}

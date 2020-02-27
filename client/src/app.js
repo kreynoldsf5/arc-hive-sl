@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { Divider } from 'semantic-ui-react'
 import { AzureAD } from 'react-aad-msal';
 import { authProvider } from './authProvider';
 import {Helmet} from "react-helmet";
@@ -8,6 +9,7 @@ import Main from "./main";
 import Results from "./results";
 import Doc from "./doc";
 import Redirector from "./redirector";
+import ArcLoader from './arcLoader';
 
 const initialState = { isLoading: false, value: '' }
 
@@ -49,7 +51,12 @@ class App extends Component {
                     );
                     case 'InProgress':
                     return (
-                        <p>Authenticating...</p>
+                        <div>
+                            <Divider hidden />
+                            <Divider hidden />
+                            <Divider hidden />
+                            <ArcLoader/>
+                        </div>
                     );
                     default:
                         return (

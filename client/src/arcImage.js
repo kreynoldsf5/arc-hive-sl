@@ -4,8 +4,9 @@ import styled from 'style-to-object';
 import { authProvider } from './authProvider';
 import Img from 'react-image'
 import { Image } from 'semantic-ui-react'
-import Loader from 'react-loader-spinner'
 import caseFormatter from 'case-formatter';
+
+import ArcLoader from './arcLoader';
 
 const backendURL = process.env.REACT_APP_BACKEND_URL
 
@@ -27,10 +28,7 @@ export default class ArcImage extends React.Component {
       <Img
         src={[this.state.imageSrc, <Image src='https://react.semantic-ui.com/images/wireframe/image.png' centered />]}
         loader={
-            <Loader 
-            type="ThreeDots" color="#A9A9A9" height={80} width={80}
-            style={{ textAlign: "center" }}
-            />
+          <ArcLoader/>
         }
         alt={this.props.imageAlt}
         style={tStyle}
