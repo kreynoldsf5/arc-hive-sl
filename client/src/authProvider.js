@@ -6,6 +6,7 @@ const config = {
     authority: process.env.REACT_APP_OIDC_AUTH,
     clientId: process.env.REACT_APP_OIDC_CLIENTID,
     redirectUri: process.env.REACT_APP_OIDC_REDIR,
+    tokenRefreshUri: window.location.origin + '/auth.html'
   },
   cache: {
     cacheLocation: "sessionStorage", //Session || Local
