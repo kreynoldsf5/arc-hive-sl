@@ -18,6 +18,9 @@ Use this repository's [issues](https://github.com/kreynoldsf5/arc-hive-sl/issues
 
 # Release Notes
 
+## 2/27/30
+Added ``Messages`` and ``Threads``. Messages are searchable from the search dialogue.
+
 ## 1/8/20
 First General Availability release. 
 
