@@ -15,7 +15,6 @@ export default class ArcMessage extends Component {
     constructor(props) {
         super(props);
         this.handleLoad = this.handleLoad.bind(this);
-        //binpath, filename, icon
         this.state = {};
       }
 

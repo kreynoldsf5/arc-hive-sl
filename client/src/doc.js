@@ -221,7 +221,7 @@ export default class Doc extends Component {
                 <Popup content={`${this.state.docContents.threadlen} message thread`}
                 trigger={
                     <Link to={this.state.docContents.threaduri}>
-                        <Icon name={this.state.docContents.icon} size='large' />
+                        <Icon name={`comments`} size='large' />
                     </Link>
                 }
                 />
