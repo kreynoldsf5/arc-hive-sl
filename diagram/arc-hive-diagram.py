@@ -30,8 +30,12 @@ with Diagram("ArcHive Architecture", show=True):
 
         backsvc = [react, workers, db_atlas]
 
-    ###Define relationships
-    cdn >> Edge(style="bold") >> react
-    apiGW >> Edge(style="bold") >> workers >> db_atlas
-    source >> Edge(style="bold") >> frontsvc
+    source >> Edge(style="bold", label=" 1 ") >> cdn
+    cdn >> Edge(style="bold", label=" 2 ") >> react
+    source >> Edge(style="bold", label=" 3 ") >> auth
+    source >> Edge(style="bold", label=" 4 ") >> apiGW
+    apiGW >> Edge(style="bold", label=" 5 ") >> workers >> db_atlas
+    source >> Edge(style="bold", label=" 6 ") >> store
+
+
 
