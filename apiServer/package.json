@@ -13,7 +13,7 @@
   "dependencies": {
     "aws-sdk": "^2.594.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-bearer-token": "^2.4.0",
     "express-winston": "^4.0.2",
     "jwt-decode": "^2.2.0",
